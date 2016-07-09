@@ -9,11 +9,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import java.io.File;
 
 public class MainActivity extends AppCompatActivity {
     private static final int LICZBA=1;
+    private static final int LICZBAKamera=2;
     ImageView image;
 
     @Override
@@ -56,8 +58,39 @@ public class MainActivity extends AppCompatActivity {
             Log.d("Uwaga","startActivityFor");
             image.setImageDrawable(Drawable.createFromPath("sdcard/moje_zdjecia/zdjecie.jpg"));
 
+        }
+        if(requestCode==LICZBAKamera){
+            Log.d("Uwaga","startActivityFor2");
+            Toast.makeText(this,"Zrobione",Toast.LENGTH_LONG).show();
+
+
 
         }
+
+
+
+    }
+
+    public void buttonekkamera(View view) {
+        String pathCamera= "sdcard/kamera";
+       File getKamera = getFileKamera (pathCamera);
+        Uri uri = Uri.fromFile(getKamera);
+        Intent intent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT,uri);
+        intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY,1);
+        startActivityForResult(intent,LICZBAKamera);
+
+
+
+    }
+
+    private File getFileKamera(String pathCamera) {
+        File fileKamera1 = new File(pathCamera);
+        if(!fileKamera1.exists()){
+            fileKamera1.mkdirs();
+        }
+        File fileKamera2 = new File(fileKamera1,"filmik.mp4");
+        return  fileKamera2;
 
     }
 }
